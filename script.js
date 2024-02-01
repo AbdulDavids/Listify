@@ -113,28 +113,29 @@ fetch(endpoint)
     imageElement.src = jsonData.urls.regular;
   });
 
-function updateWeather() {
-  const weatherInfo = document.getElementById("weather-info");
-  const apiKey = "288d83813c1674286701634fbfab4b6c"; y
-  const city = "Cape Town"; 
-
-  const weatherEndpoint = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-  fetch(weatherEndpoint)
-    .then((response) => response.json())
-    .then((weatherData) => {
+  async function updateWeather() {
+    const weatherInfo = document.getElementById("weather-info");
+    const apiKey = "288d83813c1674286701634fbfab4b6c";
+    const city = "Cape Town";
+  
+    const weatherEndpoint = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  
+    try {
+      const response = await fetch(weatherEndpoint);
+      const weatherData = await response.json();
+  
       const temperature = weatherData.main.temp;
       const description = weatherData.weather[0].description;
       const weatherText = `Temperature: ${temperature}°C`;
       const descriptionText = `Description: ${description}`;
-
+  
       weatherInfo.innerHTML = `${weatherText}<br>${descriptionText}`;
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error("Error fetching weather data:", error);
       weatherInfo.textContent = "Unable to fetch weather data.";
-    });
-}
+    }
+  }
+  
 
 // Call the updateWeather function to display weather information
 updateWeather();
